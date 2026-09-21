@@ -2,9 +2,6 @@ name: reusable-claims
 
 on:
   workflow_call:
-    secrets:
-      BB_REUSABLE_CANARY:
-        required: true
 
 permissions:
   id-token: write
@@ -16,17 +13,6 @@ jobs:
     steps:
       - name: Identify workflow copy
         run: echo "WORKFLOW_MARKER=replacement"
-      - name: Confirm passed canary presence
-        env:
-          BB_REUSABLE_CANARY: ${{ secrets.BB_REUSABLE_CANARY }}
-        shell: bash
-        run: |
-          if [[ -n "$BB_REUSABLE_CANARY" ]]; then
-            echo "CANARY_PRESENT=true"
-          else
-            echo "CANARY_PRESENT=false"
-            exit 1
-          fi
       - name: Decode selected OIDC claims
         shell: bash
         run: |
